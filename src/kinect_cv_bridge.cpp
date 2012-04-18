@@ -7,7 +7,7 @@
 
 namespace enc = sensor_msgs::image_encodings;
 
-static const char WINDOW[] = "Image window";
+//static const char WINDOW[] = "Image window";
 
 class ImageConverter
 {
@@ -23,12 +23,12 @@ public:
     image_pub_ = it_.advertise("out", 1);
     image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
 
-    cv::namedWindow(WINDOW);
+//    cv::namedWindow(WINDOW);
   }
 
   ~ImageConverter()
   {
-    cv::destroyWindow(WINDOW);
+//    cv::destroyWindow(WINDOW);
   }
 
   void imageCb(const sensor_msgs::ImageConstPtr& msg)
@@ -47,7 +47,7 @@ public:
     if (cv_ptr->image.rows > 60 && cv_ptr->image.cols > 60)
       cv::circle(cv_ptr->image, cv::Point(50, 50), 10, CV_RGB(255,0,0));
 
-    cv::imshow(WINDOW, cv_ptr->image);
+//    cv::imshow(WINDOW, cv_ptr->image);
     cv::waitKey(3);
     
     image_pub_.publish(cv_ptr->toImageMsg());
