@@ -11,47 +11,48 @@ namespace enc = sensor_msgs::image_encodings;
 
 class ImageConverter
 {
-  ros::NodeHandle nh_;
-  image_transport::ImageTransport it_;
-  image_transport::Subscriber image_sub_;
-  image_transport::Publisher image_pub_;
+	ros::NodeHandle nh_;
+	image_transport::ImageTransport it_;
+	image_transport::Subscriber image_sub_;
+	image_transport::Publisher image_pub_;
+	int number_;
   
 public:
-  ImageConverter()
-    : it_(nh_)
-  {
-    image_pub_ = it_.advertise("out", 1);
-    image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
-
-//    cv::namedWindow(WINDOW);
+	ImageConverter() : it_(nh_)
+	{
+		number_ = 0;		// File number
+		image_pub_ = it_.advertise("out", 1);
+		image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
+//		cv::namedWindow(WINDOW);
   }
 
-  ~ImageConverter()
-  {
+	~ImageConverter()
+	{
 //    cv::destroyWindow(WINDOW);
-  }
+	}
 
-  void imageCb(const sensor_msgs::ImageConstPtr& msg)
-  {
-    cv_bridge::CvImagePtr cv_ptr;
-    try
-    {
-      cv_ptr = cv_bridge::toCvCopy(msg, enc::BGR8);
-    }
-    catch (cv_bridge::Exception& e)
-    {
-      ROS_ERROR("cv_bridge exception: %s", e.what());
-      return;
-    }
+	void imageCb(const sensor_msgs::ImageConstPtr& msg)
+	{
+		cv_bridge::CvImagePtr cv_ptr;
+		try
+		{
+			cv_ptr = cv_bridge::toCvCopy(msg, enc::BGR8);
+		}
+		catch (cv_bridge::Exception& e)
+		{
+			ROS_ERROR("cv_bridge exception: %s", e.what());
+			return;
+		}
 
-    if (cv_ptr->image.rows > 60 && cv_ptr->image.cols > 60)
-      cv::circle(cv_ptr->image, cv::Point(50, 50), 10, CV_RGB(255,0,0));
+//    	cv::imshow(WINDOW, cv_ptr->image);
+		char filename[40];
+		sprintf(filename,"kinect_rgb_%d.jpg",number_);
+		cv::imwrite(filename,cv_ptr->image);    
+		cv::waitKey(3);
+		number_++;	// File number    
 
-//    cv::imshow(WINDOW, cv_ptr->image);
-    cv::waitKey(3);
-    
-    image_pub_.publish(cv_ptr->toImageMsg());
-  }
+		image_pub_.publish(cv_ptr->toImageMsg());
+	}
 };
 
 int main(int argc, char** argv)
