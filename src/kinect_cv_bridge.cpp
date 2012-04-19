@@ -29,7 +29,7 @@ public:
 		cv::Mat src_host(480,640,0);
 		cv::gpu::GpuMat dst_device, src_device;
 		src_device.upload(src_host);
-		cv::gpu::cvtColor(src_device,dst_device,CV_BGR2GRAY)
+		cv::gpu::cvtColor(src_device,dst_device,CV_BGR2GRAY);
 		cv::Mat result_host;
 		dst_device.download(result_host);
 		ROS_INFO("GPU initialization done...");
@@ -60,7 +60,7 @@ public:
 			cv::Mat src_host = cv_ptr->image;
 			cv::gpu::GpuMat dst_device, src_device;
 			src_device.upload(src_host);
-			cv::gpu::cvtColor(src_device,dst_device,CV_BGR2GRAY)
+			cv::gpu::cvtColor(src_device,dst_device,CV_BGR2GRAY);
 			cv::Mat result_host;
 			dst_device.download(result_host);
 //			cv::imshow("Result", result_host);
