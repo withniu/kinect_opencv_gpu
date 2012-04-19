@@ -66,7 +66,7 @@ public:
 //			cv::imshow("Result", result_host);
 
 			char filename_gpu[40];
-			sprintf(filename_gpu,"kinect_rgb_%03d_gpu.jpg",number_);
+			sprintf(filename_gpu,"gpu_kinect_rgb_%03d.jpg",number_);
 		    cv::imwrite(filename_gpu,result_host);    
 		}
 		catch(const cv::Exception& ex)
