@@ -76,9 +76,9 @@ public:
 			surf.downloadKeypoints(keypoints, keypoints_host);
 			surf.downloadDescriptors(descriptors, descriptors_host);
 
-			BruteForceMatcher<L2<float> > matcher;
-			vector<DMatch> matches;
-			matcher.match(descriptors1, descriptors2, matches);
+//			BruteForceMatcher<L2<float> > matcher;
+//			vector<DMatch> matches;
+//			matcher.match(descriptors1, descriptors2, matches);
 
 			
 			cv::Mat result_host;
