@@ -35,6 +35,8 @@ public:
 
 	void imageCb(const sensor_msgs::ImageConstPtr& msg)
 	{
+		ROS_INFO("Callback...");
+		
 		cv_bridge::CvImagePtr cv_ptr;
 		try
 		{
@@ -50,6 +52,7 @@ public:
 
 		try
 		{
+			ROS_INFO("GPU starts...");
 			cv::Mat src_host;
 			cvtColor(cv_ptr->image, src_host, CV_BGR2GRAY);
 	
@@ -63,7 +66,7 @@ public:
 			char filename_gpu[40];
 			sprintf(filename_gpu,"kinect_rgb_%3d_gpu.jpg",number_);
 		    cv::imwrite(filename_gpu,result_host);    
-
+			ROS_INFO("GPU end...");
 			cv::waitKey();
 		}
 		catch(const cv::Exception& ex)
@@ -76,8 +79,10 @@ public:
 		cv::imwrite(filename,cv_ptr->image);    
 		cv::waitKey(3);
 		number_++;	// File number    
-
+		
 		image_pub_.publish(cv_ptr->toImageMsg());
+		ROS_INFO("Callback end...");
+		
 	}
 };
 
