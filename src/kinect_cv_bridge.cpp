@@ -26,7 +26,7 @@ public:
 		image_pub_ = it_.advertise("out", 1);
 		image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
 //		cv::namedWindow(WINDOW);
-			cv::Mat src_host = imread("kinect_rgb_  0.jpg",0);
+			cv::Mat src_host = cv::imread("kinect_rgb_  0.jpg",0);
 			ROS_INFO("src_host to grayscale...");
 	
 			cv::gpu::GpuMat dst, src;
