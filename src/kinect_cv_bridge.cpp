@@ -2,8 +2,10 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
+
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/gpu/gpu.hpp>        // GPU structures and methods
 
 namespace enc = sensor_msgs::image_encodings;
 
@@ -45,6 +47,27 @@ public:
 		}
 
 //    	cv::imshow(WINDOW, cv_ptr->image);
+
+		try
+		{
+			cvtColor(cv_ptr->image, src_host, CV_BGR2GRAY);
+			cv::Mat src_host;
+			cv::gpu::GpuMat dst, src;
+			src.upload(src_host);
+
+			cv::gpu::threshold(src, dst, 128.0, 255.0, CV_THRESH_BINARY);
+
+			cv::Mat result_host = dst;
+//			cv::imshow("Result", result_host);
+		    cv::imwrite("gpu_test.jpg",result_host);    
+
+			cv::waitKey();
+		}
+		catch(const cv::Exception& ex)
+		{
+			std::cout << "Error: " << ex.what() << std::endl;
+		}
+
 		char filename[40];
 		sprintf(filename,"kinect_rgb_%3d.jpg",number_);
 		cv::imwrite(filename,cv_ptr->image);    
