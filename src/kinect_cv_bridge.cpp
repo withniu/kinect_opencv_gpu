@@ -59,9 +59,10 @@ public:
 
 		try
 		{
-			cv::gpu::GpuMat dst_device, src_device, img_device;
-			cv::gpu::GpuMat mask = cv::Mat::ones(480,640,CV_8UC1);
+			cv::gpu::GpuMat dst_device, src_device, img_device, mask;
 			
+			cv::Mat mask_host = cv::Mat::ones(480,640,CV_8UC1);
+			mask.upload(mask_host);
 			src_device.upload(src_host);
 			cv::gpu::cvtColor(src_device,img_device,CV_BGR2GRAY);
 			
