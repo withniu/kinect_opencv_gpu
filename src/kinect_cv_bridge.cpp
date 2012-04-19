@@ -26,6 +26,19 @@ public:
 		image_pub_ = it_.advertise("out", 1);
 		image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
 //		cv::namedWindow(WINDOW);
+			cv::Mat src_host = imread("kinect_rgb_  0.jpg",0);
+			ROS_INFO("src_host to grayscale...");
+	
+			cv::gpu::GpuMat dst, src;
+			src.upload(src_host);
+			ROS_INFO("src_host uploaded to gpu...");
+
+			cv::gpu::threshold(src, dst, 128.0, 255.0, CV_THRESH_BINARY);
+			ROS_INFO("gpu done...");
+			cv::Mat result_host;
+			dst.download(result_host);
+			ROS_INFO("GPU end...");
+
   }
 
 	~ImageConverter()
@@ -71,7 +84,6 @@ public:
 			sprintf(filename_gpu,"kinect_rgb_%3d_gpu.jpg",number_);
 		    cv::imwrite(filename_gpu,result_host);    
 			ROS_INFO("GPU end...");
-			cv::waitKey();
 		}
 		catch(const cv::Exception& ex)
 		{
