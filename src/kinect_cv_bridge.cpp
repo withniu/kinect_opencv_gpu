@@ -74,7 +74,7 @@ public:
 
 		try
 		{
-			cv::gpu::gpuMat src_dev;
+			cv::gpu::GpuMat src_dev;
 			src_dev.upload(cv_ptr->image);
 			cv::gpu::cvtColor(src_dev,img_dev,CV_BGR2GRAY);
 			
@@ -83,8 +83,8 @@ public:
 	
 			surf(img_dev,mask_dev,keypoints1_dev, descriptors1_dev);
 			
-			vector<cv::KeyPoint> keypoints_host1;			
-			surf.downloadKeypoints(keypoints_dev1, keypoints_host1);
+			vector<cv::KeyPoint> keypoints1_host;			
+			surf.downloadKeypoints(keypoints1_dev, keypoints1_host);
 			
 
 			
@@ -93,14 +93,14 @@ public:
 //			matcher.match(descriptors_host, descriptors_host, matches);
 
 			
-			cv::Mat result_host1;
-			img_dev.download(result_host1);
+			cv::Mat result1_host;
+			img_dev.download(result1_host);
 //			cv::imshow("Result", result_host);
-			drawKeypoints(result_host1,keypoints_host1,result_host1);
+			drawKeypoints(result1_host,keypoints1_host,result1_host);
 			
 			char filename_gpu[40];
 			sprintf(filename_gpu,"gpu_kinect_rgb_%03d.jpg",number_);
-		    cv::imwrite(filename_gpu,result_host1);    
+		    cv::imwrite(filename_gpu,result1_host);    
 		}
 		catch(const cv::Exception& ex)
 		{
