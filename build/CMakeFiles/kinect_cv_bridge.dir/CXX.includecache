@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/withniu/ros_workspace/kinect_opencv_gpu/src/kinect_cv_bridge.cpp
+/home/yedniu/ros_workspace/kinect_opencv_gpu/src/kinect_cv_bridge.cpp
 ros/ros.h
 -
 image_transport/image_transport.h
@@ -18,6 +18,8 @@ sensor_msgs/image_encodings.h
 opencv2/imgproc/imgproc.hpp
 -
 opencv2/highgui/highgui.hpp
+-
+opencv2/gpu/gpu.hpp
 -
 
 /opt/ros/electric/stacks/common_msgs/sensor_msgs/include/sensor_msgs/image_encodings.h
@@ -812,11 +814,11 @@ opencv2/core/core.hpp
 stdexcept
 -
 
-/usr/include/opencv-2.3.1/opencv2/core/core.hpp
+/usr/local/include/opencv2/core/core.hpp
 opencv2/core/types_c.h
-/usr/include/opencv-2.3.1/opencv2/core/opencv2/core/types_c.h
+/usr/local/include/opencv2/core/opencv2/core/types_c.h
 opencv2/core/version.hpp
-/usr/include/opencv-2.3.1/opencv2/core/opencv2/core/version.hpp
+/usr/local/include/opencv2/core/opencv2/core/version.hpp
 limits.h
 -
 algorithm
@@ -835,22 +837,32 @@ string
 -
 vector
 -
+sstream
+-
 opencv2/core/operations.hpp
-/usr/include/opencv-2.3.1/opencv2/core/opencv2/core/operations.hpp
+/usr/local/include/opencv2/core/opencv2/core/operations.hpp
 opencv2/core/mat.hpp
-/usr/include/opencv-2.3.1/opencv2/core/opencv2/core/mat.hpp
+/usr/local/include/opencv2/core/opencv2/core/mat.hpp
 
-/usr/include/opencv-2.3.1/opencv2/core/core_c.h
+/usr/local/include/opencv2/core/core_c.h
 opencv2/core/types_c.h
-/usr/include/opencv-2.3.1/opencv2/core/opencv2/core/types_c.h
+/usr/local/include/opencv2/core/opencv2/core/types_c.h
 
-/usr/include/opencv-2.3.1/opencv2/core/mat.hpp
+/usr/local/include/opencv2/core/devmem2d.hpp
+
+/usr/local/include/opencv2/core/gpumat.hpp
+opencv2/core/core.hpp
+/usr/local/include/opencv2/core/opencv2/core/core.hpp
+opencv2/core/devmem2d.hpp
+/usr/local/include/opencv2/core/opencv2/core/devmem2d.hpp
+
+/usr/local/include/opencv2/core/mat.hpp
 limits.h
 -
 string.h
 -
 
-/usr/include/opencv-2.3.1/opencv2/core/operations.hpp
+/usr/local/include/opencv2/core/operations.hpp
 string.h
 -
 limits.h
@@ -859,12 +871,12 @@ ext/atomicity.h
 -
 bits/atomicity.h
 -
-intrin.h
+windows.h
 -
 limits
 -
 
-/usr/include/opencv-2.3.1/opencv2/core/types_c.h
+/usr/local/include/opencv2/core/types_c.h
 assert.h
 -
 stdlib.h
@@ -887,28 +899,72 @@ ipl.h
 -
 ipl/ipl.h
 -
+tegra_round.hpp
+/usr/local/include/opencv2/core/tegra_round.hpp
 
-/usr/include/opencv-2.3.1/opencv2/core/version.hpp
+/usr/local/include/opencv2/core/version.hpp
 
-/usr/include/opencv-2.3.1/opencv2/highgui/highgui.hpp
+/usr/local/include/opencv2/features2d/features2d.hpp
 opencv2/core/core.hpp
-/usr/include/opencv-2.3.1/opencv2/highgui/opencv2/core/core.hpp
+/usr/local/include/opencv2/features2d/opencv2/core/core.hpp
+opencv2/flann/miniflann.hpp
+/usr/local/include/opencv2/features2d/opencv2/flann/miniflann.hpp
+limits
+-
+
+/usr/local/include/opencv2/flann/config.h
+
+/usr/local/include/opencv2/flann/defines.h
+config.h
+/usr/local/include/opencv2/flann/config.h
+
+/usr/local/include/opencv2/flann/miniflann.hpp
+opencv2/core/core.hpp
+/usr/local/include/opencv2/flann/opencv2/core/core.hpp
+opencv2/flann/defines.h
+/usr/local/include/opencv2/flann/opencv2/flann/defines.h
+
+/usr/local/include/opencv2/gpu/gpu.hpp
+vector
+-
+memory
+-
+iosfwd
+-
+opencv2/core/gpumat.hpp
+/usr/local/include/opencv2/gpu/opencv2/core/gpumat.hpp
+opencv2/imgproc/imgproc.hpp
+/usr/local/include/opencv2/gpu/opencv2/imgproc/imgproc.hpp
+opencv2/objdetect/objdetect.hpp
+/usr/local/include/opencv2/gpu/opencv2/objdetect/objdetect.hpp
+opencv2/features2d/features2d.hpp
+/usr/local/include/opencv2/gpu/opencv2/features2d/features2d.hpp
+
+/usr/local/include/opencv2/highgui/highgui.hpp
+opencv2/core/core.hpp
+/usr/local/include/opencv2/highgui/opencv2/core/core.hpp
 opencv2/highgui/highgui_c.h
-/usr/include/opencv-2.3.1/opencv2/highgui/opencv2/highgui/highgui_c.h
+/usr/local/include/opencv2/highgui/opencv2/highgui/highgui_c.h
 
-/usr/include/opencv-2.3.1/opencv2/highgui/highgui_c.h
+/usr/local/include/opencv2/highgui/highgui_c.h
 opencv2/core/core_c.h
-/usr/include/opencv-2.3.1/opencv2/highgui/opencv2/core/core_c.h
+/usr/local/include/opencv2/highgui/opencv2/core/core_c.h
 
-/usr/include/opencv-2.3.1/opencv2/imgproc/imgproc.hpp
+/usr/local/include/opencv2/imgproc/imgproc.hpp
 opencv2/core/core.hpp
-/usr/include/opencv-2.3.1/opencv2/imgproc/opencv2/core/core.hpp
+/usr/local/include/opencv2/imgproc/opencv2/core/core.hpp
 opencv2/imgproc/types_c.h
-/usr/include/opencv-2.3.1/opencv2/imgproc/opencv2/imgproc/types_c.h
+/usr/local/include/opencv2/imgproc/opencv2/imgproc/types_c.h
 
-/usr/include/opencv-2.3.1/opencv2/imgproc/types_c.h
+/usr/local/include/opencv2/imgproc/types_c.h
 opencv2/core/core_c.h
-/usr/include/opencv-2.3.1/opencv2/imgproc/opencv2/core/core_c.h
-opencv2/imgproc/types_c.h
-/usr/include/opencv-2.3.1/opencv2/imgproc/opencv2/imgproc/types_c.h
+/usr/local/include/opencv2/imgproc/opencv2/core/core_c.h
+
+/usr/local/include/opencv2/objdetect/objdetect.hpp
+opencv2/core/core.hpp
+/usr/local/include/opencv2/objdetect/opencv2/core/core.hpp
+map
+-
+deque
+-
 

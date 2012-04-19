@@ -9,7 +9,6 @@
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/kinect_opencv_gpu</url>
   <depend package="sensor_msgs"/>
-  <depend package="opencv2"/>
   <depend package="cv_bridge"/>
   <depend package="roscpp"/>
   <depend package="std_msgs"/>

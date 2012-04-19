@@ -31,11 +31,14 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
+# The program to use to edit the cache.
+CMAKE_EDIT_COMMAND = /usr/bin/ccmake
+
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/withniu/ros_workspace/kinect_opencv_gpu
+CMAKE_SOURCE_DIR = /home/yedniu/ros_workspace/kinect_opencv_gpu
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/withniu/ros_workspace/kinect_opencv_gpu/build
+CMAKE_BINARY_DIR = /home/yedniu/ros_workspace/kinect_opencv_gpu/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/kinect_cv_bridge.dir/depend.make
@@ -89,17 +92,17 @@ CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.o: /opt/ros/electric/stacks
 CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.o: /opt/ros/electric/stacks/common_msgs/geometry_msgs/msg_gen/generated
 CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.o: /opt/ros/electric/stacks/common_msgs/sensor_msgs/msg_gen/generated
 CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.o: /opt/ros/electric/stacks/common_msgs/sensor_msgs/srv_gen/generated
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/withniu/ros_workspace/kinect_opencv_gpu/build/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/yedniu/ros_workspace/kinect_opencv_gpu/build/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.o -c /home/withniu/ros_workspace/kinect_opencv_gpu/src/kinect_cv_bridge.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.o -c /home/yedniu/ros_workspace/kinect_opencv_gpu/src/kinect_cv_bridge.cpp
 
 CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -E /home/withniu/ros_workspace/kinect_opencv_gpu/src/kinect_cv_bridge.cpp > CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -E /home/yedniu/ros_workspace/kinect_opencv_gpu/src/kinect_cv_bridge.cpp > CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.i
 
 CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -S /home/withniu/ros_workspace/kinect_opencv_gpu/src/kinect_cv_bridge.cpp -o CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -S /home/yedniu/ros_workspace/kinect_opencv_gpu/src/kinect_cv_bridge.cpp -o CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.s
 
 CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.o.requires:
 .PHONY : CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.o.requires
@@ -119,17 +122,6 @@ kinect_cv_bridge_OBJECTS = \
 kinect_cv_bridge_EXTERNAL_OBJECTS =
 
 ../bin/kinect_cv_bridge: CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.o
-../bin/kinect_cv_bridge: /usr/lib/libopencv_contrib.so.2.3.1
-../bin/kinect_cv_bridge: /usr/lib/libopencv_legacy.so.2.3.1
-../bin/kinect_cv_bridge: /usr/lib/libopencv_objdetect.so.2.3.1
-../bin/kinect_cv_bridge: /usr/lib/libopencv_calib3d.so.2.3.1
-../bin/kinect_cv_bridge: /usr/lib/libopencv_features2d.so.2.3.1
-../bin/kinect_cv_bridge: /usr/lib/libopencv_video.so.2.3.1
-../bin/kinect_cv_bridge: /usr/lib/libopencv_highgui.so.2.3.1
-../bin/kinect_cv_bridge: /usr/lib/libopencv_ml.so.2.3.1
-../bin/kinect_cv_bridge: /usr/lib/libopencv_imgproc.so.2.3.1
-../bin/kinect_cv_bridge: /usr/lib/libopencv_flann.so.2.3.1
-../bin/kinect_cv_bridge: /usr/lib/libopencv_core.so.2.3.1
 ../bin/kinect_cv_bridge: CMakeFiles/kinect_cv_bridge.dir/build.make
 ../bin/kinect_cv_bridge: CMakeFiles/kinect_cv_bridge.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable ../bin/kinect_cv_bridge"
@@ -147,6 +139,6 @@ CMakeFiles/kinect_cv_bridge.dir/clean:
 .PHONY : CMakeFiles/kinect_cv_bridge.dir/clean
 
 CMakeFiles/kinect_cv_bridge.dir/depend:
-	cd /home/withniu/ros_workspace/kinect_opencv_gpu/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/withniu/ros_workspace/kinect_opencv_gpu /home/withniu/ros_workspace/kinect_opencv_gpu /home/withniu/ros_workspace/kinect_opencv_gpu/build /home/withniu/ros_workspace/kinect_opencv_gpu/build /home/withniu/ros_workspace/kinect_opencv_gpu/build/CMakeFiles/kinect_cv_bridge.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/yedniu/ros_workspace/kinect_opencv_gpu/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/yedniu/ros_workspace/kinect_opencv_gpu /home/yedniu/ros_workspace/kinect_opencv_gpu /home/yedniu/ros_workspace/kinect_opencv_gpu/build /home/yedniu/ros_workspace/kinect_opencv_gpu/build /home/yedniu/ros_workspace/kinect_opencv_gpu/build/CMakeFiles/kinect_cv_bridge.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/kinect_cv_bridge.dir/depend
 
