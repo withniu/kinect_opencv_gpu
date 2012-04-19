@@ -55,14 +55,17 @@ public:
 			ROS_INFO("GPU starts...");
 			cv::Mat src_host;
 			cvtColor(cv_ptr->image, src_host, CV_BGR2GRAY);
+			ROS_INFO("src_host to grayscale...");
 	
 			cv::gpu::GpuMat dst, src;
 			src.upload(src_host);
+			ROS_INFO("src_host uploaded to gpu...");
 
 			cv::gpu::threshold(src, dst, 128.0, 255.0, CV_THRESH_BINARY);
-
+			ROS_INFO("gpu done...");
 			cv::Mat result_host;
 			dst.download(result_host);
+			ROS_INFO("download from gpu done...");
 //			cv::imshow("Result", result_host);
 			char filename_gpu[40];
 			sprintf(filename_gpu,"kinect_rgb_%3d_gpu.jpg",number_);
