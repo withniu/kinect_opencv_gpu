@@ -50,8 +50,9 @@ public:
 
 		try
 		{
-			cvtColor(cv_ptr->image, src_host, CV_BGR2GRAY);
 			cv::Mat src_host;
+			cvtColor(cv_ptr->image, src_host, CV_BGR2GRAY);
+	
 			cv::gpu::GpuMat dst, src;
 			src.upload(src_host);
 
