@@ -61,7 +61,8 @@ public:
 
 			cv::gpu::threshold(src, dst, 128.0, 255.0, CV_THRESH_BINARY);
 
-			cv::Mat result_host = dst;
+			cv::Mat result_host;
+			dst.download(result_host);
 //			cv::imshow("Result", result_host);
 			char filename_gpu[40];
 			sprintf(filename_gpu,"kinect_rgb_%3d_gpu.jpg",number_);
