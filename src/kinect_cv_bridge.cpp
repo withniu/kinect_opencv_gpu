@@ -39,7 +39,7 @@ public:
 
 		// GPU initialization
 		
-		mask_host = cv::Mat::ones(480,640,CV_8UC1);
+		cv::Mat mask_host = cv::Mat::ones(480,640,CV_8UC1);
 		mask_dev.upload(mask_host);
 		
 
