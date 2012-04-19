@@ -26,19 +26,12 @@ public:
 		image_pub_ = it_.advertise("out", 1);
 		image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
 //		cv::namedWindow(WINDOW);
-			cv::Mat src_host = cv::imread("kinect_rgb_  0.jpg",0);
-			ROS_INFO("src_host to grayscale...");
-	
-			cv::gpu::GpuMat dst, src;
-			src.upload(src_host);
-			ROS_INFO("src_host uploaded to gpu...");
-
-			cv::gpu::threshold(src, dst, 128.0, 255.0, CV_THRESH_BINARY);
-			ROS_INFO("gpu done...");
-			cv::Mat result_host;
-			dst.download(result_host);
-			ROS_INFO("GPU end...");
-
+		cv::Mat src_host = cv::Mat::create(460,640,0);
+		cv::gpu::GpuMat dst_device, src_device;
+		src.upload(src_host);
+		cv::gpu::cvtColor(src_device,dst_device,CV_BGR2GRAY)
+		cv::Mat result_host;
+		dst_device.download(result_host);
   }
 
 	~ImageConverter()
@@ -48,8 +41,6 @@ public:
 
 	void imageCb(const sensor_msgs::ImageConstPtr& msg)
 	{
-		ROS_INFO("Callback...");
-		
 		cv_bridge::CvImagePtr cv_ptr;
 		try
 		{
@@ -65,25 +56,17 @@ public:
 
 		try
 		{
-			ROS_INFO("GPU starts...");
-			cv::Mat src_host;
-			cvtColor(cv_ptr->image, src_host, CV_BGR2GRAY);
-			ROS_INFO("src_host to grayscale...");
-	
-			cv::gpu::GpuMat dst, src;
+			cv::Mat src_host = cv_ptr->image;
+			cv::gpu::GpuMat dst_device, src_device;
 			src.upload(src_host);
-			ROS_INFO("src_host uploaded to gpu...");
-
-			cv::gpu::threshold(src, dst, 128.0, 255.0, CV_THRESH_BINARY);
-			ROS_INFO("gpu done...");
+			cv::gpu::cvtColor(src_device,dst_device,CV_BGR2GRAY)
 			cv::Mat result_host;
-			dst.download(result_host);
-			ROS_INFO("download from gpu done...");
+			dst_device.download(result_host);
 //			cv::imshow("Result", result_host);
+
 			char filename_gpu[40];
-			sprintf(filename_gpu,"kinect_rgb_%3d_gpu.jpg",number_);
+			sprintf(filename_gpu,"kinect_rgb_%03d_gpu.jpg",number_);
 		    cv::imwrite(filename_gpu,result_host);    
-			ROS_INFO("GPU end...");
 		}
 		catch(const cv::Exception& ex)
 		{
@@ -91,13 +74,11 @@ public:
 		}
 
 		char filename[40];
-		sprintf(filename,"kinect_rgb_%3d.jpg",number_);
+		sprintf(filename,"kinect_rgb_%03d.jpg",number_);
 		cv::imwrite(filename,cv_ptr->image);    
-		cv::waitKey(3);
 		number_++;	// File number    
 		
 		image_pub_.publish(cv_ptr->toImageMsg());
-		ROS_INFO("Callback end...");
 		
 	}
 };
