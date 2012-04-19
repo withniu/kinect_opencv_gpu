@@ -26,7 +26,7 @@ public:
 		image_pub_ = it_.advertise("out", 1);
 		image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
 //		cv::namedWindow(WINDOW);
-		cv::Mat src_host(480,640,1);
+		cv::Mat src_host(480,640,CV_8UC3);
 		cv::gpu::GpuMat dst_device, src_device;
 		src_device.upload(src_host);
 		cv::gpu::cvtColor(src_device,dst_device,CV_BGR2GRAY);
