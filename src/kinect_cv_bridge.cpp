@@ -65,17 +65,27 @@ public:
 			src_device.upload(src_host);
 			cv::gpu::cvtColor(src_device,img_device,CV_BGR2GRAY);
 			
+			// SURF GPU
 			cv::gpu::GpuMat keypoints, descriptors;
 			cv::gpu::SURF_GPU surf;
 			surf(img_device,mask,keypoints, descriptors);
 			
 			vector<cv::KeyPoint> keypoints_host;
+			vector<float> descriptors_host;
+			
 			surf.downloadKeypoints(keypoints, keypoints_host);
+			surf.downloadDescriptors(descriptors, descriptors_host);
+
+			BruteForceMatcher<L2<float> > matcher;
+			vector<DMatch> matches;
+			matcher.match(descriptors1, descriptors2, matches);
+
 			
 			cv::Mat result_host;
 			dst_device.download(result_host);
 //			cv::imshow("Result", result_host);
-
+			drawKeypoints(cv_ptr->image,keypoints_host,result_host);
+			
 			char filename_gpu[40];
 			sprintf(filename_gpu,"gpu_kinect_rgb_%03d.jpg",number_);
 		    cv::imwrite(filename_gpu,result_host);    
