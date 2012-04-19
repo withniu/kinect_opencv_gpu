@@ -59,9 +59,9 @@ public:
 
 		try
 		{
-			cv::Mat src_host = cv_ptr->image;
 			cv::gpu::GpuMat dst_device, src_device, img_device;
-			cv::gpu::GpuMat mask(480,640,CV_8UC1);
+			cv::gpu::GpuMat mask = cv::Mat::ones(480,640,CV_8UC1);
+			
 			src_device.upload(src_host);
 			cv::gpu::cvtColor(src_device,img_device,CV_BGR2GRAY);
 			
@@ -82,9 +82,9 @@ public:
 
 			
 			cv::Mat result_host;
-			dst_device.download(result_host);
+			img_device.download(result_host);
 //			cv::imshow("Result", result_host);
-			drawKeypoints(cv_ptr->image,keypoints_host,result_host);
+			drawKeypoints(result_host,keypoints_host,result_host);
 			
 			char filename_gpu[40];
 			sprintf(filename_gpu,"gpu_kinect_rgb_%03d.jpg",number_);
