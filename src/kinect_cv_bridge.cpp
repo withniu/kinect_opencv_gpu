@@ -59,6 +59,7 @@ public:
 
 		try
 		{
+			cv::Mat src_host = cv_ptr->image;
 			cv::gpu::GpuMat dst_device, src_device, img_device, mask;
 			
 			cv::Mat mask_host = cv::Mat::ones(480,640,CV_8UC1);
