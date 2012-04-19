@@ -46,7 +46,7 @@ public:
 
 //    	cv::imshow(WINDOW, cv_ptr->image);
 		char filename[40];
-		sprintf(filename,"kinect_rgb_%d.jpg",number_);
+		sprintf(filename,"kinect_rgb_%3d.jpg",number_);
 		cv::imwrite(filename,cv_ptr->image);    
 		cv::waitKey(3);
 		number_++;	// File number    
