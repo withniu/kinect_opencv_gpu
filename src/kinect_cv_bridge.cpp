@@ -32,6 +32,7 @@ public:
 		cv::gpu::cvtColor(src_device,dst_device,CV_BGR2GRAY)
 		cv::Mat result_host;
 		dst_device.download(result_host);
+		ROS_INFO("GPU initialization done...");
   }
 
 	~ImageConverter()
@@ -79,7 +80,8 @@ public:
 		number_++;	// File number    
 		
 		image_pub_.publish(cv_ptr->toImageMsg());
-		
+		ROS_INFO("Callback done...");
+ 		
 	}
 };
 
