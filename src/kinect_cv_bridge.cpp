@@ -8,6 +8,7 @@
 #include <opencv2/gpu/gpu.hpp>        // GPU structures and methods
 
 using namespace std;
+using namespace cv;
 
 namespace enc = sensor_msgs::image_encodings;
 
@@ -20,6 +21,13 @@ class ImageConverter
 	image_transport::Subscriber image_sub_;
 	image_transport::Publisher image_pub_;
 	int number_;
+
+	cv::gpu::GpuMat keypoints1_dev, descriptors1_dev;
+	cv::gpu::GpuMat keypoints2_dev, descriptors2_dev;
+	cv::gpu::GpuMat img_dev, mask_dev;
+
+
+  
   
 public:
 	ImageConverter() : it_(nh_)
@@ -28,6 +36,13 @@ public:
 		image_pub_ = it_.advertise("out", 1);
 		image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
 //		cv::namedWindow(WINDOW);
+
+		// GPU initialization
+		
+		mask_host = cv::Mat::ones(480,640,CV_8UC1);
+		mask_dev.upload(mask_host);
+		
+
 		cv::Mat src_host(480,640,CV_8UC3);
 		cv::gpu::GpuMat dst_device, src_device;
 		src_device.upload(src_host);
@@ -59,40 +74,33 @@ public:
 
 		try
 		{
-			cv::Mat src_host = cv_ptr->image;
-			cv::gpu::GpuMat dst_device, src_device, img_device, mask;
-			
-			cv::Mat mask_host = cv::Mat::ones(480,640,CV_8UC1);
-			mask.upload(mask_host);
-			src_device.upload(src_host);
-			cv::gpu::cvtColor(src_device,img_device,CV_BGR2GRAY);
+			cv::gpu::gpuMat src_dev;
+			src_dev.upload(cv_ptr->image);
+			cv::gpu::cvtColor(src_dev,img_dev,CV_BGR2GRAY);
 			
 			// SURF GPU
-			cv::gpu::GpuMat keypoints, descriptors;
-			cv::gpu::SURF_GPU surf;
-			surf(img_device,mask,keypoints, descriptors);
+			cv::gpu::SURF_GPU surf;	
+	
+			surf(img_dev,mask_dev,keypoints1_dev, descriptors1_dev);
 			
-			vector<cv::KeyPoint> keypoints_host;
-			vector<float> descriptors_host;
+			vector<cv::KeyPoint> keypoints_host1;			
+			surf.downloadKeypoints(keypoints_dev1, keypoints_host1);
 			
-			surf.downloadKeypoints(keypoints, keypoints_host);
-			surf.downloadDescriptors(descriptors, descriptors_host);
-
 
 			
-			BruteForceMatcher<L2<float> > matcher;
-			vector<DMatch> matches;
-			matcher.match(descriptors_host, descriptors_host, matches);
+//			BruteForceMatcher<cv::L2<float> > matcher;
+//			vector<DMatch> matches;
+//			matcher.match(descriptors_host, descriptors_host, matches);
 
 			
-			cv::Mat result_host;
-			img_device.download(result_host);
+			cv::Mat result_host1;
+			img_dev.download(result_host1);
 //			cv::imshow("Result", result_host);
-			drawKeypoints(result_host,keypoints_host,result_host);
+			drawKeypoints(result_host1,keypoints_host1,result_host1);
 			
 			char filename_gpu[40];
 			sprintf(filename_gpu,"gpu_kinect_rgb_%03d.jpg",number_);
-		    cv::imwrite(filename_gpu,result_host);    
+		    cv::imwrite(filename_gpu,result_host1);    
 		}
 		catch(const cv::Exception& ex)
 		{
