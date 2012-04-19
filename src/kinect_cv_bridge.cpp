@@ -69,7 +69,7 @@ public:
 			cv::gpu::SURF_GPU surf;
 			surf(img_device,mask,keypoints, descriptors);
 			
-			vector<KeyPoint> keypoints_host;
+			vector<cv::KeyPoint> keypoints_host;
 			surf.downloadKeypoints(keypoints, keypoints_host);
 			
 			cv::Mat result_host;
