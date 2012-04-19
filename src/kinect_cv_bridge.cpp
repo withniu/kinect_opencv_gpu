@@ -60,7 +60,9 @@ public:
 
 			cv::Mat result_host = dst;
 //			cv::imshow("Result", result_host);
-		    cv::imwrite("gpu_test.jpg",result_host);    
+			char filename_gpu[40];
+			sprintf(filename_gpu,"kinect_rgb_%3d_gpu.jpg",number_);
+		    cv::imwrite(filename_gpu,result_host);    
 
 			cv::waitKey();
 		}
