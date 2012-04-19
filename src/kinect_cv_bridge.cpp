@@ -7,6 +7,8 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/gpu/gpu.hpp>        // GPU structures and methods
 
+using namespace std;
+
 namespace enc = sensor_msgs::image_encodings;
 
 //static const char WINDOW[] = "Image window";
@@ -58,9 +60,18 @@ public:
 		try
 		{
 			cv::Mat src_host = cv_ptr->image;
-			cv::gpu::GpuMat dst_device, src_device;
+			cv::gpu::GpuMat dst_device, src_device, img_device;
+			cv::gpu::GpuMat mask(480,640,CV_8UC1);
 			src_device.upload(src_host);
-			cv::gpu::cvtColor(src_device,dst_device,CV_BGR2GRAY);
+			cv::gpu::cvtColor(src_device,img_device,CV_BGR2GRAY);
+			
+			cv::gpu::GpuMat keypoints, descriptors;
+			cv::gpu::SURF_GPU surf;
+			surf(img_device,mask,keypoints, descriptors);
+			
+			vector<KeyPoint> keypoints_host;
+			surf.downloadKeypoints(keypoints, keypoints_host);
+			
 			cv::Mat result_host;
 			dst_device.download(result_host);
 //			cv::imshow("Result", result_host);
