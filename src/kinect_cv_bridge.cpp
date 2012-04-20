@@ -97,11 +97,11 @@ public:
 			cv::Mat result1_host;
 			img_dev.download(result1_host);
 //			cv::imshow("Result", result_host);
-			drawKeypoints(result1_host,keypoints2_host,result1_host);
-			end3 = ros::Time::now();
-			char filename_gpu[40];
-			sprintf(filename_gpu,"gpu_kinect_rgb_%03d.jpg",number_);
-		    cv::imwrite(filename_gpu,result1_host);    
+//			drawKeypoints(result1_host,keypoints2_host,result1_host);
+//			end3 = ros::Time::now();
+//			char filename_gpu[40];
+//			sprintf(filename_gpu,"gpu_kinect_rgb_%03d.jpg",number_);
+//		    cv::imwrite(filename_gpu,result1_host);    
 		}
 		catch(const cv::Exception& ex)
 		{
@@ -111,12 +111,13 @@ public:
 //		char filename[40];
 //		sprintf(filename,"kinect_rgb_%03d.jpg",number_);
 //		cv::imwrite(filename,cv_ptr->image);    
-//		number_++;	// File number    
+		number_++;	// File number    
 		
 		end4 = ros::Time::now();
 		image_pub_.publish(cv_ptr->toImageMsg());
 		end = ros::Time::now();
-		ROS_INFO("Callback takes %f %f %f %f %f %f second",end.toSec() - begin.toSec(),end1.toSec() - begin.toSec(),end2.toSec() - end1.toSec(),end3.toSec() - end2.toSec(),end4.toSec() - end3.toSec(),end.toSec() - end4.toSec());
+//		ROS_INFO("Callback takes %f %f %f %f %f %f second",end.toSec() - begin.toSec(),end1.toSec() - begin.toSec(),end2.toSec() - end1.toSec(),end3.toSec() - end2.toSec(),end4.toSec() - end3.toSec(),end.toSec() - end4.toSec());
+ 		ROS_INFO(".2%fHz, %fs",end.toSec() - begin.toSec(),1 / (end.toSec() - begin.toSec()));
  		
 	}
 };
