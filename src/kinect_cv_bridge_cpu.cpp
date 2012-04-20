@@ -62,31 +62,28 @@ public:
 		}
 
 //    	cv::imshow(WINDOW, cv_ptr->image);
-
-
-		
 		if (number_ % 2)
 			img1 = cv_ptr->image;
 		else
 			img2 = cv_ptr->image;
 
-		SurfFeatureDetector detector(400);
+		cv::SurfFeatureDetector detector(400);
 		if (number_ % 2)
 			detector.detect(img1, keypoints1);
 		else
 			detector.detect(img2, keypoints2);
 
-		SurfDescriptorExtractor extractor;
-		Mat descriptors1, descriptors2;
+		cv::SurfDescriptorExtractor extractor;
+		cv::Mat descriptors1, descriptors2;
 		if (number_ % 2)		
 			extractor.compute(img1, keypoints1, descriptors1);
 		else		
 			extractor.compute(img2, keypoints2, descriptors2);
 		
-		BruteForceMatcher<L2<float> > matcher;
+		cv::BruteForceMatcher<L2<float> > matcher;
 		vector<DMatch> matches;
 		
-		atcher.match(descriptors1, descriptors2, matches);
+		matcher.match(descriptors1, descriptors2, matches);
 		
 		cv::Mat img_matches;		
 		if (!(number_ % 2))
