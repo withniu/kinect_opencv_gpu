@@ -23,11 +23,10 @@ class ImageConverter
 	image_transport::Publisher image_pub_;
 	int number_;
 
-
+	cv::Mat mask;
 	cv::Mat img1,img2;
 	vector<KeyPoint> keypoints1, keypoints2;
-	Mat descriptors1, descriptors2;
-
+	vector<float> descriptors1, descriptors2;
   
 public:
 	ImageConverter() : it_(nh_)
@@ -36,7 +35,7 @@ public:
 		image_pub_ = it_.advertise("out", 1);
 		image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
 //		cv::namedWindow(WINDOW);
-
+		mask = cv::Mat::ones(480,640,CV_8UC1);
 		// GPU initialization
   }
 
@@ -67,19 +66,13 @@ public:
 		else
 			img2 = cv_ptr->image;
 
-		cv::SurfFeatureDetector detector(400);
+		cv::SURF surf;		
 		if (number_ % 2)
-			detector.detect(img1, keypoints1);
+			surf(img1, keypoints1, mask, descriptors1);
 		else
-			detector.detect(img2, keypoints2);
+			surf(img2, keypoints2, mask, descriptors2);
 
-		cv::SurfDescriptorExtractor extractor;
-		cv::Mat descriptors1, descriptors2;
-		if (number_ % 2)		
-			extractor.compute(img1, keypoints1, descriptors1);
-		else		
-			extractor.compute(img2, keypoints2, descriptors2);
-		
+	
 		cv::BruteForceMatcher<L2<float> > matcher;
 		vector<DMatch> matches;
 		
