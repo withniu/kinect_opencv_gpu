@@ -4,6 +4,8 @@
 #include <sensor_msgs/image_encodings.h>
 
 #include <opencv2/features2d/features2d.hpp>
+#include <opencv2/calib3d/calib3d.hpp>
+
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 //#include <opencv2/gpu/gpu.hpp>        // GPU structures and methods
@@ -38,7 +40,7 @@ public:
 		image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
 //		cv::namedWindow(WINDOW);
 		mask = cv::Mat::ones(480,640,CV_8UC1);
-		// GPU initialization
+		cv::StereoSGBM niu;
   }
 
 	~ImageConverter()

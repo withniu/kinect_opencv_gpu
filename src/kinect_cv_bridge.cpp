@@ -6,7 +6,6 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/gpu/gpu.hpp>        // GPU structures and methods
-#include <opencv2/calib3d/calib3d.hpp>
 
 
 
@@ -41,7 +40,6 @@ public:
 		image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
 //		cv::namedWindow(WINDOW);
 
-		cv::StereoBM sbm;
 
 		// GPU initialization
 
