@@ -31,14 +31,11 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
-# The program to use to edit the cache.
-CMAKE_EDIT_COMMAND = /usr/bin/ccmake
-
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/yedniu/ros_workspace/kinect_opencv_gpu
+CMAKE_SOURCE_DIR = /home/withniu/ros_workspace/kinect_opencv_gpu
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/yedniu/ros_workspace/kinect_opencv_gpu/build
+CMAKE_BINARY_DIR = /home/withniu/ros_workspace/kinect_opencv_gpu/build
 
 # Utility rule file for test-results.
 
@@ -58,6 +55,6 @@ CMakeFiles/test-results.dir/clean:
 .PHONY : CMakeFiles/test-results.dir/clean
 
 CMakeFiles/test-results.dir/depend:
-	cd /home/yedniu/ros_workspace/kinect_opencv_gpu/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/yedniu/ros_workspace/kinect_opencv_gpu /home/yedniu/ros_workspace/kinect_opencv_gpu /home/yedniu/ros_workspace/kinect_opencv_gpu/build /home/yedniu/ros_workspace/kinect_opencv_gpu/build /home/yedniu/ros_workspace/kinect_opencv_gpu/build/CMakeFiles/test-results.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/withniu/ros_workspace/kinect_opencv_gpu/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/withniu/ros_workspace/kinect_opencv_gpu /home/withniu/ros_workspace/kinect_opencv_gpu /home/withniu/ros_workspace/kinect_opencv_gpu/build /home/withniu/ros_workspace/kinect_opencv_gpu/build /home/withniu/ros_workspace/kinect_opencv_gpu/build/CMakeFiles/test-results.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/test-results.dir/depend
 

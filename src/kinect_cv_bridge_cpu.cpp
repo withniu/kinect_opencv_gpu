@@ -28,7 +28,7 @@ class ImageConverter
 	cv::Mat mask;
 	cv::Mat img1,img2;
 	vector<KeyPoint> keypoints1, keypoints2;
-	vector<float> descriptors1, descriptors2;
+	Mat descriptors1, descriptors2;
   
 public:
 	ImageConverter() : it_(nh_)
@@ -68,17 +68,25 @@ public:
 		else
 			img2 = cv_ptr->image;
 
-		cv::SIFT sift;		
+		SurfFeatureDetector detector(400);	
 		if (number_ % 2)
-			surf(img1, keypoints1, mask, descriptors1);
+			detector.detect(img1, keypoints1);
 		else
-			surf(img2, keypoints2, mask, descriptors2);
+			detector.detect(img2, keypoints2);
 
-	
-		cv::BruteForceMatcher<L2<float> > matcher;
+
+		SurfDescriptorExtractor extractor;
+		if (number_ % 2)	
+			extractor.compute(img1, keypoints1, descriptors1);
+		else
+			extractor.compute(img2, keypoints2, descriptors2);		
+
+		BruteForceMatcher<L2<float> > matcher;
 		vector<DMatch> matches;
-		
-		matcher.match(descriptors1, descriptors2, matches);
+		if (!(number_ % 2))				
+			matcher.match(descriptors1, descriptors2, matches);
+		else
+			matcher.match(descriptors2, descriptors1, matches);
 		
 		cv::Mat img_matches;		
 		if (!(number_ % 2))
@@ -89,7 +97,6 @@ public:
 		char filename_cpu[40];
 		sprintf(filename_cpu,"cpu_kinect_rgb_matches_%03d.jpg",number_);
 		cv::imwrite(filename_cpu,img_matches);    
-
 //		char filename[40];
 //		sprintf(filename,"kinect_rgb_%03d.jpg",number_);
 //		cv::imwrite(filename,cv_ptr->image);    

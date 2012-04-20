@@ -35,22 +35,19 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
-# The program to use to edit the cache.
-CMAKE_EDIT_COMMAND = /usr/bin/ccmake
-
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/yedniu/ros_workspace/kinect_opencv_gpu
+CMAKE_SOURCE_DIR = /home/withniu/ros_workspace/kinect_opencv_gpu
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/yedniu/ros_workspace/kinect_opencv_gpu/build
+CMAKE_BINARY_DIR = /home/withniu/ros_workspace/kinect_opencv_gpu/build
 
 #=============================================================================
 # Targets provided globally by CMake.
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running interactive CMake command-line interface..."
+	/usr/bin/cmake -i .
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -69,9 +66,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/yedniu/ros_workspace/kinect_opencv_gpu/build/CMakeFiles /home/yedniu/ros_workspace/kinect_opencv_gpu/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/withniu/ros_workspace/kinect_opencv_gpu/build/CMakeFiles /home/withniu/ros_workspace/kinect_opencv_gpu/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/yedniu/ros_workspace/kinect_opencv_gpu/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/withniu/ros_workspace/kinect_opencv_gpu/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -175,6 +172,19 @@ kinect_cv_bridge: cmake_check_build_system
 kinect_cv_bridge/fast:
 	$(MAKE) -f CMakeFiles/kinect_cv_bridge.dir/build.make CMakeFiles/kinect_cv_bridge.dir/build
 .PHONY : kinect_cv_bridge/fast
+
+#=============================================================================
+# Target rules for targets named kinect_cv_bridge_cpu
+
+# Build rule for target.
+kinect_cv_bridge_cpu: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 kinect_cv_bridge_cpu
+.PHONY : kinect_cv_bridge_cpu
+
+# fast build rule for target.
+kinect_cv_bridge_cpu/fast:
+	$(MAKE) -f CMakeFiles/kinect_cv_bridge_cpu.dir/build.make CMakeFiles/kinect_cv_bridge_cpu.dir/build
+.PHONY : kinect_cv_bridge_cpu/fast
 
 #=============================================================================
 # Target rules for targets named rosbuild_precompile
@@ -321,6 +331,21 @@ src/kinect_cv_bridge.s:
 	$(MAKE) -f CMakeFiles/kinect_cv_bridge.dir/build.make CMakeFiles/kinect_cv_bridge.dir/src/kinect_cv_bridge.s
 .PHONY : src/kinect_cv_bridge.s
 
+# target to build an object file
+src/kinect_cv_bridge_cpu.o:
+	$(MAKE) -f CMakeFiles/kinect_cv_bridge_cpu.dir/build.make CMakeFiles/kinect_cv_bridge_cpu.dir/src/kinect_cv_bridge_cpu.o
+.PHONY : src/kinect_cv_bridge_cpu.o
+
+# target to preprocess a source file
+src/kinect_cv_bridge_cpu.i:
+	$(MAKE) -f CMakeFiles/kinect_cv_bridge_cpu.dir/build.make CMakeFiles/kinect_cv_bridge_cpu.dir/src/kinect_cv_bridge_cpu.i
+.PHONY : src/kinect_cv_bridge_cpu.i
+
+# target to generate assembly for a file
+src/kinect_cv_bridge_cpu.s:
+	$(MAKE) -f CMakeFiles/kinect_cv_bridge_cpu.dir/build.make CMakeFiles/kinect_cv_bridge_cpu.dir/src/kinect_cv_bridge_cpu.s
+.PHONY : src/kinect_cv_bridge_cpu.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -334,6 +359,7 @@ help:
 	@echo "... clean-test-results"
 	@echo "... edit_cache"
 	@echo "... kinect_cv_bridge"
+	@echo "... kinect_cv_bridge_cpu"
 	@echo "... rebuild_cache"
 	@echo "... rosbuild_precompile"
 	@echo "... rosbuild_premsgsrvgen"
@@ -348,6 +374,9 @@ help:
 	@echo "... src/kinect_cv_bridge.o"
 	@echo "... src/kinect_cv_bridge.i"
 	@echo "... src/kinect_cv_bridge.s"
+	@echo "... src/kinect_cv_bridge_cpu.o"
+	@echo "... src/kinect_cv_bridge_cpu.i"
+	@echo "... src/kinect_cv_bridge_cpu.s"
 .PHONY : help
 
 
