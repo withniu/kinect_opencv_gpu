@@ -68,7 +68,7 @@ public:
 		else
 			img2 = cv_ptr->image;
 
-		cv::SURF surf;		
+		cv::SIFT surf;		
 		if (number_ % 2)
 			surf(img1, keypoints1, mask, descriptors1);
 		else
