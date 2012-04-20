@@ -6,6 +6,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/gpu/gpu.hpp>        // GPU structures and methods
+#include <opencv2/features2d/features2d.hpp>
 
 
 
@@ -40,6 +41,7 @@ public:
 		image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
 //		cv::namedWindow(WINDOW);
 
+		cv::SURF surf;
 		// GPU initialization
 
 		cv::Mat mask_host = cv::Mat::ones(480,640,CV_8UC1);
