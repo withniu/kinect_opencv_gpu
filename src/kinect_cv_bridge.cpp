@@ -96,7 +96,7 @@ public:
 			else
 				surf(img_dev,mask_dev,keypoints2_dev, descriptors2_dev);
 			
-			end2 = ros::Time::now();
+			
 			cv::gpu::BruteForceMatcher_GPU<cv::L2<float> > matcher;
 			vector<DMatch> matches;
 			if (!number_ % 2)
@@ -105,7 +105,7 @@ public:
 				matcher.match(descriptors2_dev,descriptors1_dev,matches);
 		
 	
-			end3 = ros::Time::now();			
+			end2 = ros::Time::now();	
 			vector<cv::KeyPoint> keypoints1_host;			
 			surf.downloadKeypoints(keypoints1_dev, keypoints1_host);
 			vector<cv::KeyPoint> keypoints2_host;			
@@ -117,7 +117,7 @@ public:
 //			img_dev.download(result1_host);
 //			cv::imshow("Result", result_host);
 //			drawKeypoints(result1_host,keypoints2_host,result1_host);
-			end4 = ros::Time::now();
+			end3 = ros::Time::now();
 
 			cv::Mat img_matches;
 			if (!number_ % 2)
@@ -142,7 +142,13 @@ public:
 		end4 = ros::Time::now();
 		image_pub_.publish(cv_ptr->toImageMsg());
 		end = ros::Time::now();
-		ROS_INFO("Callback takes %f %f %f %f %f %f second",end.toSec() - begin.toSec(),end1.toSec() - begin.toSec(),end2.toSec() - end1.toSec(),end3.toSec() - end2.toSec(),end4.toSec() - end3.toSec(),end.toSec() - end4.toSec());
+		ROS_INFO("Callback takes %f %f %f %f %f %f second",
+					end.toSec() - begin.toSec(),
+					end1.toSec() - begin.toSec(),
+					end2.toSec() - end1.toSec(),
+					end3.toSec() - end2.toSec(),
+					end4.toSec() - end3.toSec(),
+					end.toSec() - end4.toSec());
  		ROS_INFO("%fs, %.2fHz",end.toSec() - begin.toSec(),1 / (end.toSec() - begin.toSec()));
  		
 	}
