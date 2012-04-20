@@ -96,7 +96,7 @@ public:
 			
 			cv::Mat result1_host;
 			img_dev.download(result1_host);
-			cv::imshow("Result", result_host);
+//			cv::imshow("Result", result_host);
 			drawKeypoints(result1_host,keypoints2_host,result1_host);
 			end3 = ros::Time::now();
 			char filename_gpu[40];
