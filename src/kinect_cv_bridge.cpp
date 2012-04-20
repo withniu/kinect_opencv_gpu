@@ -99,7 +99,7 @@ public:
 				surf(img_dev,mask_dev,keypoints2_dev, descriptors2_dev);
 			
 
-			cv::gpu::BruteForceMatch_GPU<cv::L2<float> > matcher;
+			cv::gpu::BruteForceMatcher_GPU<cv::L2<float> > matcher;
 			vector<DMatch> matches;
 			matcher.match(descriptors1_dev,descriptors2_dev,matches);
 			
