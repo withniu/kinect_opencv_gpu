@@ -79,9 +79,9 @@ public:
 		try
 		{
 			if (number_ % 2)
-				img1_host = cv_ptr;
+				img1_host = cv_ptr->image;
 			else
-				img2_host = cv_ptr;
+				img2_host = cv_ptr->image;
 		
 			cv::gpu::GpuMat src_dev;
 			src_dev.upload(cv_ptr->image);
