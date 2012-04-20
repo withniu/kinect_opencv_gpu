@@ -33,7 +33,7 @@ class ImageConverter
 public:
 	ImageConverter() : it_(nh_)
 	{
-		number_ = 0;		// File number
+		number_ = 1;		// File number
 		image_pub_ = it_.advertise("out", 1);
 		image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
 //		cv::namedWindow(WINDOW);
@@ -87,8 +87,6 @@ public:
 			src_dev.upload(cv_ptr->image);
 			cv::gpu::cvtColor(src_dev,img_dev,CV_BGR2GRAY);
 			
-			
-			
 			end1 = ros::Time::now();			
 			// SURF GPU	
 			if (number_ % 2)
@@ -126,7 +124,7 @@ public:
 				drawMatches(img2_host, keypoints2_host, img1_host, keypoints1_host, matches, img_matches);
 			
 			char filename_gpu[40];
-			sprintf(filename_gpu,"gpu_kinect_rgb_%03d.jpg",number_);
+			sprintf(filename_gpu,"gpu_kinect_rgb_matches_%03d.jpg",number_);
 		    cv::imwrite(filename_gpu,img_matches);    
 		}
 		catch(const cv::Exception& ex)
