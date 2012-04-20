@@ -59,7 +59,7 @@ public:
 
 	void imageCb(const sensor_msgs::ImageConstPtr& msg)
 	{
-		ros::Time begin,end1,end2,end3,end;
+		ros::Time begin,end1,end2,end3,end4,end;
 		begin = ros::Time::now();
 		
 		cv_bridge::CvImagePtr cv_ptr;
@@ -113,9 +113,10 @@ public:
 		cv::imwrite(filename,cv_ptr->image);    
 		number_++;	// File number    
 		
+		end4 = ros::Time::now();
 		image_pub_.publish(cv_ptr->toImageMsg());
 		end = ros::Time::now();
-		ROS_INFO("Callback takes %f\t%f\t%f\t%f\t%f\tsecond",end.toSec() - begin.toSec(),end1.toSec() - begin.toSec(),end2.toSec() - end1.toSec(),end3.toSec() - end2.toSec(),end.toSec() - end3.toSec());
+		ROS_INFO("Callback takes %f %f %f %f %f %f second",end.toSec() - begin.toSec(),end1.toSec() - begin.toSec(),end2.toSec() - end1.toSec(),end3.toSec() - end2.toSec(),end4.toSec() - end3.toSec(),end.toSec() - end4.toSec());
  		
 	}
 };
