@@ -26,7 +26,7 @@ class ImageConverter
 	cv::gpu::GpuMat keypoints2_dev, descriptors2_dev;
 	cv::gpu::GpuMat img_dev, mask_dev;
 
-
+	cv::gpu::SURF_GPU surf;	
   
   
 public:
@@ -79,12 +79,18 @@ public:
 			cv::gpu::cvtColor(src_dev,img_dev,CV_BGR2GRAY);
 			
 			// SURF GPU
-			cv::gpu::SURF_GPU surf;	
+
 	
-			surf(img_dev,mask_dev,keypoints1_dev, descriptors1_dev);
 			
-			vector<cv::KeyPoint> keypoints1_host;			
-			surf.downloadKeypoints(keypoints1_dev, keypoints1_host);
+	
+			surf(img_dev,mask_dev,keypoints2_dev, descriptors2_dev);
+			
+			
+			
+			
+			
+			vector<cv::KeyPoint> keypoints2_host;			
+			surf.downloadKeypoints(keypoints2_dev, keypoints2_host);
 			
 
 			
@@ -96,7 +102,7 @@ public:
 			cv::Mat result1_host;
 			img_dev.download(result1_host);
 //			cv::imshow("Result", result_host);
-			drawKeypoints(result1_host,keypoints1_host,result1_host);
+			drawKeypoints(result1_host,keypoints2_host,result1_host);
 			
 			char filename_gpu[40];
 			sprintf(filename_gpu,"gpu_kinect_rgb_%03d.jpg",number_);
