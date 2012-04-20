@@ -6,6 +6,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/gpu/gpu.hpp>        // GPU structures and methods
+#include <features2d.hpp>
 
 
 using namespace std;
