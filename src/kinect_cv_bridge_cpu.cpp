@@ -67,14 +67,14 @@ public:
 		else
 			img2 = cv_ptr->image;
 
-		cv::SURF surf;		
+		SURF surf;		
 		if (number_ % 2)
 			surf(img1, keypoints1, mask, descriptors1);
 		else
 			surf(img2, keypoints2, mask, descriptors2);
 
 	
-		cv::BruteForceMatcher<L2<float> > matcher;
+		BruteForceMatcher<L2<float> > matcher;
 		vector<DMatch> matches;
 		
 		matcher.match(descriptors1, descriptors2, matches);
