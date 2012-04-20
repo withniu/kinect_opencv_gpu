@@ -59,6 +59,8 @@ public:
 
 	void imageCb(const sensor_msgs::ImageConstPtr& msg)
 	{
+		ros::Time begin = ros::Time::now();
+		
 		cv_bridge::CvImagePtr cv_ptr;
 		try
 		{
@@ -119,7 +121,8 @@ public:
 		number_++;	// File number    
 		
 		image_pub_.publish(cv_ptr->toImageMsg());
-		ROS_INFO("Callback done...");
+		ros::Time end = ros::Time::now();
+		ROS_INFO("Callback takes %f second",end.toSec() - begin.toSec());
  		
 	}
 };
