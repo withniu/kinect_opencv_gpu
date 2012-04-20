@@ -86,23 +86,26 @@ public:
 			cv::gpu::GpuMat src_dev;
 			src_dev.upload(cv_ptr->image);
 			cv::gpu::cvtColor(src_dev,img_dev,CV_BGR2GRAY);
-			end1 = ros::Time::now();
 			
 			
 			
-			
+			end1 = ros::Time::now();			
 			// SURF GPU	
-			
 			if (number_ % 2)
 				surf(img_dev,mask_dev,keypoints1_dev, descriptors1_dev);
 			else
 				surf(img_dev,mask_dev,keypoints2_dev, descriptors2_dev);
 			
-
+			end2 = ros::Time::now();
 			cv::gpu::BruteForceMatcher_GPU<cv::L2<float> > matcher;
 			vector<DMatch> matches;
-			matcher.match(descriptors1_dev,descriptors2_dev,matches);
-			
+			if (!number_ % 2)
+				matcher.match(descriptors1_dev,descriptors2_dev,matches);
+			else
+				matcher.match(descriptors2_dev,descriptors1_dev,matches);
+		
+	
+			end3 = ros::Time::now();			
 			vector<cv::KeyPoint> keypoints1_host;			
 			surf.downloadKeypoints(keypoints1_dev, keypoints1_host);
 			vector<cv::KeyPoint> keypoints2_host;			
@@ -114,11 +117,14 @@ public:
 //			img_dev.download(result1_host);
 //			cv::imshow("Result", result_host);
 //			drawKeypoints(result1_host,keypoints2_host,result1_host);
-			end3 = ros::Time::now();
+			end4 = ros::Time::now();
 
 			cv::Mat img_matches;
-			drawMatches(img1_host, keypoints1_host, img2_host, keypoints2_host, matches, img_matches);
-
+			if (!number_ % 2)
+				drawMatches(img1_host, keypoints1_host, img2_host, keypoints2_host, matches, img_matches);
+			else
+				drawMatches(img2_host, keypoints2_host, img1_host, keypoints1_host, matches, img_matches);
+			
 			char filename_gpu[40];
 			sprintf(filename_gpu,"gpu_kinect_rgb_%03d.jpg",number_);
 		    cv::imwrite(filename_gpu,img_matches);    
@@ -136,7 +142,7 @@ public:
 		end4 = ros::Time::now();
 		image_pub_.publish(cv_ptr->toImageMsg());
 		end = ros::Time::now();
-//		ROS_INFO("Callback takes %f %f %f %f %f %f second",end.toSec() - begin.toSec(),end1.toSec() - begin.toSec(),end2.toSec() - end1.toSec(),end3.toSec() - end2.toSec(),end4.toSec() - end3.toSec(),end.toSec() - end4.toSec());
+		ROS_INFO("Callback takes %f %f %f %f %f %f second",end.toSec() - begin.toSec(),end1.toSec() - begin.toSec(),end2.toSec() - end1.toSec(),end3.toSec() - end2.toSec(),end4.toSec() - end3.toSec(),end.toSec() - end4.toSec());
  		ROS_INFO("%fs, %.2fHz",end.toSec() - begin.toSec(),1 / (end.toSec() - begin.toSec()));
  		
 	}
