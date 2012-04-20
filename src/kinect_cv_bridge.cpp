@@ -22,10 +22,11 @@ class ImageConverter
 	image_transport::Publisher image_pub_;
 	int number_;
 
+	
+	cv::Mat img1_host,img2_host;
 	cv::gpu::GpuMat keypoints1_dev, descriptors1_dev;
 	cv::gpu::GpuMat keypoints2_dev, descriptors2_dev;
 	cv::gpu::GpuMat img_dev, mask_dev;
-
 	cv::gpu::SURF_GPU surf;	
   
   
@@ -77,31 +78,50 @@ public:
 
 		try
 		{
+			if (number_ % 2)
+				img1_host = cv_ptr;
+			else
+				img2_host = cv_ptr;
+		
 			cv::gpu::GpuMat src_dev;
 			src_dev.upload(cv_ptr->image);
 			cv::gpu::cvtColor(src_dev,img_dev,CV_BGR2GRAY);
 			end1 = ros::Time::now();
+			
+			
+			
+			
 			// SURF GPU	
-			surf(img_dev,mask_dev,keypoints2_dev, descriptors2_dev);
-			end2 = ros::Time::now();						
+			
+			if (number_ % 2)
+				surf(img_dev,mask_dev,keypoints1_dev, descriptors1_dev);
+			else
+				surf(img_dev,mask_dev,keypoints2_dev, descriptors2_dev);
+			
+
+			cv::gpu::BruteForceMatch_GPU<cv::L2<float> > matcher;
+			vector<DMatch> matches;
+			matcher.match(descriptors1_dev,descriptors2_dev,matches);
+			
+			vector<cv::KeyPoint> keypoints1_host;			
+			surf.downloadKeypoints(keypoints1_dev, keypoints1_host);
 			vector<cv::KeyPoint> keypoints2_host;			
 			surf.downloadKeypoints(keypoints2_dev, keypoints2_host);
-			
 
 			
-//			BruteForceMatcher<cv::L2<float> > matcher;
-//			vector<DMatch> matches;
-//			matcher.match(descriptors_host, descriptors_host, matches);
-
 			
-			cv::Mat result1_host;
-			img_dev.download(result1_host);
+//			cv::Mat result1_host;
+//			img_dev.download(result1_host);
 //			cv::imshow("Result", result_host);
-			drawKeypoints(result1_host,keypoints2_host,result1_host);
+//			drawKeypoints(result1_host,keypoints2_host,result1_host);
 			end3 = ros::Time::now();
+
+			cv::Mat img_matches;
+			drawMatches(img1_host, keypoints1_host, img2_host, keypoints2_host, matches, img_matches);
+
 			char filename_gpu[40];
 			sprintf(filename_gpu,"gpu_kinect_rgb_%03d.jpg",number_);
-		    cv::imwrite(filename_gpu,result1_host);    
+		    cv::imwrite(filename_gpu,img_matches);    
 		}
 		catch(const cv::Exception& ex)
 		{
