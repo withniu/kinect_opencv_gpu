@@ -96,12 +96,12 @@ public:
 			
 			cv::Mat result1_host;
 			img_dev.download(result1_host);
-//			cv::imshow("Result", result_host);
-//			drawKeypoints(result1_host,keypoints2_host,result1_host);
-//			end3 = ros::Time::now();
-//			char filename_gpu[40];
-//			sprintf(filename_gpu,"gpu_kinect_rgb_%03d.jpg",number_);
-//		    cv::imwrite(filename_gpu,result1_host);    
+			cv::imshow("Result", result_host);
+			drawKeypoints(result1_host,keypoints2_host,result1_host);
+			end3 = ros::Time::now();
+			char filename_gpu[40];
+			sprintf(filename_gpu,"gpu_kinect_rgb_%03d.jpg",number_);
+		    cv::imwrite(filename_gpu,result1_host);    
 		}
 		catch(const cv::Exception& ex)
 		{
