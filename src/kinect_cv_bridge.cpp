@@ -7,6 +7,9 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/gpu/gpu.hpp>        // GPU structures and methods
 
+
+#define SURF_GPU 1
+
 using namespace std;
 using namespace cv;
 
@@ -22,13 +25,17 @@ class ImageConverter
 	image_transport::Publisher image_pub_;
 	int number_;
 
-	
+#if SURF_GPU	
 	cv::Mat img1_host,img2_host;
 	cv::gpu::GpuMat keypoints1_dev, descriptors1_dev;
 	cv::gpu::GpuMat keypoints2_dev, descriptors2_dev;
 	cv::gpu::GpuMat img_dev, mask_dev;
-	cv::gpu::SURF_GPU surf;	
-  
+	cv::gpu::SURF_GPU surf;
+#else
+	cv::Mat img1,img2;
+	vector<KeyPoint> keypoints1, keypoints2;
+	Mat descriptors1, descriptors2;
+#endif  
   
 public:
 	ImageConverter() : it_(nh_)
@@ -39,11 +46,9 @@ public:
 //		cv::namedWindow(WINDOW);
 
 		// GPU initialization
-		
+#if SURF_GPU		
 		cv::Mat mask_host = cv::Mat::ones(480,640,CV_8UC1);
 		mask_dev.upload(mask_host);
-		
-
 		cv::Mat src_host(480,640,CV_8UC3);
 		cv::gpu::GpuMat dst_device, src_device;
 		src_device.upload(src_host);
@@ -51,6 +56,7 @@ public:
 		cv::Mat result_host;
 		dst_device.download(result_host);
 		ROS_INFO("GPU initialization done...");
+#endif
   }
 
 	~ImageConverter()
@@ -76,6 +82,7 @@ public:
 
 //    	cv::imshow(WINDOW, cv_ptr->image);
 
+#if SURF_GPU
 		try
 		{
 			if (number_ % 2)
@@ -101,16 +108,14 @@ public:
 				matcher.match(descriptors1_dev,descriptors2_dev,matches);
 			else
 				matcher.match(descriptors2_dev,descriptors1_dev,matches);
-		
-	
+			
 			end2 = ros::Time::now();	
 			vector<cv::KeyPoint> keypoints1_host;			
 			surf.downloadKeypoints(keypoints1_dev, keypoints1_host);
 			vector<cv::KeyPoint> keypoints2_host;			
 			surf.downloadKeypoints(keypoints2_dev, keypoints2_host);
 
-			
-			
+					
 //			cv::Mat result1_host;
 //			img_dev.download(result1_host);
 //			cv::imshow("Result", result_host);
@@ -125,28 +130,63 @@ public:
 			
 			char filename_gpu[40];
 			sprintf(filename_gpu,"gpu_kinect_rgb_matches_%03d.jpg",number_);
-		    cv::imwrite(filename_gpu,img_matches);    
+		    	cv::imwrite(filename_gpu,img_matches);    
 		}
 		catch(const cv::Exception& ex)
 		{
 			std::cout << "Error: " << ex.what() << std::endl;
 		}
+#else
+		
+		if (number_ % 2)
+			img1 = cv_ptr->image;
+		else
+			img2 = cv_ptr->image;
 
+		SurfFeatureDetector detector(400);
+		if (number_ % 2)
+			detector.detect(img1, keypoints1);
+		else
+			detector.detect(img2, keypoints2);
+
+		SurfDescriptorExtractor extractor;
+		Mat descriptors1, descriptors2;
+		if (number_ % 2)		
+			extractor.compute(img1, keypoints1, descriptors1);
+		else		
+			extractor.compute(img2, keypoints2, descriptors2);
+		
+		BruteForceMatcher<L2<float> > matcher;
+		vector<DMatch> matches;
+		
+		atcher.match(descriptors1, descriptors2, matches);
+		
+		cv::Mat img_matches;		
+		if (!(number_ % 2))
+			drawMatches(img1, keypoints1, img2, keypoints2, matches, img_matches);
+		else
+			drawMatches(img2, keypoints2, img1, keypoints1, matches, img_matches);
+
+		char filename_cpu[40];
+		sprintf(filename_cpu,"cpu_kinect_rgb_matches_%03d.jpg",number_);
+		cv::imwrite(filename_cpu,img_matches);    
+
+#endif
 //		char filename[40];
 //		sprintf(filename,"kinect_rgb_%03d.jpg",number_);
 //		cv::imwrite(filename,cv_ptr->image);    
-		number_++;	// File number    
+		number_++;	// File number    W
 		
 		end4 = ros::Time::now();
 		image_pub_.publish(cv_ptr->toImageMsg());
 		end = ros::Time::now();
-		ROS_INFO("Callback takes %f %f %f %f %f %f second",
-					end.toSec() - begin.toSec(),
-					end1.toSec() - begin.toSec(),
-					end2.toSec() - end1.toSec(),
-					end3.toSec() - end2.toSec(),
-					end4.toSec() - end3.toSec(),
-					end.toSec() - end4.toSec());
+//		ROS_INFO("Callback takes %f %f %f %f %f %f second",
+//					end.toSec() - begin.toSec(),
+//					end1.toSec() - begin.toSec(),
+//					end2.toSec() - end1.toSec(),
+//					end3.toSec() - end2.toSec(),
+//					end4.toSec() - end3.toSec(),
+//					end.toSec() - end4.toSec());
  		ROS_INFO("%fs, %.2fHz",end.toSec() - begin.toSec(),1 / (end.toSec() - begin.toSec()));
  		
 	}
