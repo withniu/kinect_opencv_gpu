@@ -97,7 +97,7 @@ public:
 			
 			cv::gpu::BruteForceMatcher_GPU<cv::L2<float> > matcher;
 			vector<DMatch> matches;
-			if (!number_ % 2)
+			if (!(number_ % 2))
 				matcher.match(descriptors1_dev,descriptors2_dev,matches);
 			else
 				matcher.match(descriptors2_dev,descriptors1_dev,matches);
@@ -118,7 +118,7 @@ public:
 			end3 = ros::Time::now();
 
 			cv::Mat img_matches;
-			if (!number_ % 2)
+			if (!(number_ % 2))
 				drawMatches(img1_host, keypoints1_host, img2_host, keypoints2_host, matches, img_matches);
 			else
 				drawMatches(img2_host, keypoints2_host, img1_host, keypoints1_host, matches, img_matches);
