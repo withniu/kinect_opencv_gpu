@@ -117,7 +117,7 @@ public:
 		image_pub_.publish(cv_ptr->toImageMsg());
 		end = ros::Time::now();
 //		ROS_INFO("Callback takes %f %f %f %f %f %f second",end.toSec() - begin.toSec(),end1.toSec() - begin.toSec(),end2.toSec() - end1.toSec(),end3.toSec() - end2.toSec(),end4.toSec() - end3.toSec(),end.toSec() - end4.toSec());
- 		ROS_INFO(".2%fHz, %fs",end.toSec() - begin.toSec(),1 / (end.toSec() - begin.toSec()));
+ 		ROS_INFO("%fs, %.2fHz",end.toSec() - begin.toSec(),1 / (end.toSec() - begin.toSec()));
  		
 	}
 };
