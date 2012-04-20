@@ -40,7 +40,7 @@ public:
 		image_sub_ = it_.subscribe("in", 1, &ImageConverter::imageCb, this);
 //		cv::namedWindow(WINDOW);
 		mask = cv::Mat::ones(480,640,CV_8UC1);
-		cv::StereoSGBM niu;
+		cv::CvAffinePose niu;
   }
 
 	~ImageConverter()
