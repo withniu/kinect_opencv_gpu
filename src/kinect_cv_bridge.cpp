@@ -59,7 +59,8 @@ public:
 
 	void imageCb(const sensor_msgs::ImageConstPtr& msg)
 	{
-		ros::Time begin = ros::Time::now();
+		ros::Time begin,end1,end2,end3,end;
+		begin = ros::Time::now();
 		
 		cv_bridge::CvImagePtr cv_ptr;
 		try
@@ -79,10 +80,10 @@ public:
 			cv::gpu::GpuMat src_dev;
 			src_dev.upload(cv_ptr->image);
 			cv::gpu::cvtColor(src_dev,img_dev,CV_BGR2GRAY);
-			ros::Time end1 = ros::Time::now();
+			end1 = ros::Time::now();
 			// SURF GPU	
 			surf(img_dev,mask_dev,keypoints2_dev, descriptors2_dev);
-			ros::Time end2 = ros::Time::now();						
+			end2 = ros::Time::now();						
 			vector<cv::KeyPoint> keypoints2_host;			
 			surf.downloadKeypoints(keypoints2_dev, keypoints2_host);
 			
@@ -97,7 +98,7 @@ public:
 			img_dev.download(result1_host);
 //			cv::imshow("Result", result_host);
 			drawKeypoints(result1_host,keypoints2_host,result1_host);
-			ros::Time end3 = ros::Time::now();
+			end3 = ros::Time::now();
 			char filename_gpu[40];
 			sprintf(filename_gpu,"gpu_kinect_rgb_%03d.jpg",number_);
 		    cv::imwrite(filename_gpu,result1_host);    
@@ -113,7 +114,7 @@ public:
 		number_++;	// File number    
 		
 		image_pub_.publish(cv_ptr->toImageMsg());
-		ros::Time end = ros::Time::now();
+		end = ros::Time::now();
 		ROS_INFO("Callback takes %f\t%f\t%f\t%f\t%f\tsecond",end.toSec() - begin.toSec(),end1.toSec() - begin.toSec(),end2.toSec() - end1.toSec(),end3.toSec() - end2.toSec(),end.toSec() - end3.toSec());
  		
 	}
