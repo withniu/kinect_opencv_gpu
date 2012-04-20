@@ -3,10 +3,11 @@
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
 
+#include <opencv2/features2d/features2d.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/gpu/gpu.hpp>        // GPU structures and methods
-#include <opencv2/features2d/features2d.hpp>
+
 
 
 using namespace std;
@@ -67,14 +68,14 @@ public:
 		else
 			img2 = cv_ptr->image;
 
-		SURF surf;		
+		cv::SURF surf;		
 		if (number_ % 2)
 			surf(img1, keypoints1, mask, descriptors1);
 		else
 			surf(img2, keypoints2, mask, descriptors2);
 
 	
-		BruteForceMatcher<L2<float> > matcher;
+		cv::BruteForceMatcher<L2<float> > matcher;
 		vector<DMatch> matches;
 		
 		matcher.match(descriptors1, descriptors2, matches);
